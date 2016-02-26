@@ -43,7 +43,7 @@ export function adjustment(homeRating: number, awayRating: number, result: numbe
     options = options || {};
     let kFactor = options.kFactor || K_FACTOR;
     let expectedResult = expected(homeRating, awayRating);
-    let ratingChange = Math.abs(K_FACTOR * (result - expectedResult));
+    let ratingChange = Math.abs(kFactor * (result - expectedResult));
     
     let isHomeWinner = result > 0;
     let isAwayWinner = result < 0;
