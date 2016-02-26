@@ -1,0 +1,6 @@
+*.ts
+*.map
+*.log
+node_modules/
+.git/
+test/

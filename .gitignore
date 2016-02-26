@@ -1,0 +1,6 @@
+*.log
+*.map
+*.js
+node_modules/
+typings/browser
+typings/browser.d.ts
