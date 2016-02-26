@@ -2,6 +2,8 @@ import * as chance from '../src/chance';
 import * as chai from 'chai';
 const expect = chai.expect;
 
+// TODO: Add more tests...
+
 describe('chance tests', () => {
    it('will change ratings', () => {
        testScores.forEach(s => {
