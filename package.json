@@ -1,11 +1,12 @@
 {
   "name": "ratings",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ELO ratings helper",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "npm build && npm test"
   },
   "repository": {
     "type": "git",
