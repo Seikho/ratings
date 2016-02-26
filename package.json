@@ -19,6 +19,7 @@
     "rating",
     "calculator"
   ],
+  "typings": "src/index.d.ts",
   "author": "Carl Winkler",
   "license": "MIT",
   "bugs": {
