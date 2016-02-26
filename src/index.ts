@@ -1,3 +1,4 @@
 import * as chance from './chance';
 
-export { chance as default } 
+module.exports = chance;
+module.exports.default = chance; 
