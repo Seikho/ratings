@@ -4,9 +4,10 @@
   "description": "ELO ratings helper",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha \"test/**/*.js\"",
     "build": "tsc",
-    "prepublish": "npm build && npm test"
+    "prepublish": "npm build && npm test",
+    "lint": "prettier --single-quote=true --no-bracket-spacing=true --tab-width=2 --trailing-comma=none --use-tabs=false --print-width=100 --no-semi --write \"src/**/*.ts\""
   },
   "repository": {
     "type": "git",
@@ -28,8 +29,12 @@
   },
   "homepage": "https://github.com/seikho/ratings#readme",
   "devDependencies": {
+    "@types/chai": "^4.1.1",
+    "@types/mocha": "^2.2.46",
+    "@types/node": "^9.3.0",
     "chai": "^3.5.0",
     "mocha": "^2.4.5",
-    "typescript": "^1.8.2"
+    "prettier": "^1.10.2",
+    "typescript": "2.6"
   }
 }

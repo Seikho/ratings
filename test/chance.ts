@@ -1,32 +1,38 @@
-import * as chance from '../src/chance';
-import * as chai from 'chai';
-const expect = chai.expect;
+import * as chance from '../src/chance'
+import { expect } from 'chai'
 
 // TODO: Add more tests...
 
 describe('chance tests', () => {
-   it('will change ratings', () => {
-       testScores.forEach(s => {
-           let result = chance.adjustment(s[0], s[1], s[2], s[3]);
-           let homeIsGreater = s[0] > s[1];
-           let awayIsGreater = s[1] > s[0];
-           let ratingsAreSame = s[0] === s[1];
-                     
-           if (s[2] !== 0) {
-               expect(result.home).to.not.equal(s[0]);
-               expect(result.away).to.not.equal(s[1]);
-           }
-           
-           if (s[2] === 0 && (homeIsGreater || awayIsGreater)) {
-               expect(result.home).to.not.equal(s[0]);
-               expect(result.away).to.not.equal(s[1]);
-           }
-       });
-   });
-});
+  it('will change ratings', () => {
+    for (const fixture of fixtures) {
+      const { inWhite, inBlack, result, opts } = fixture
+      const { white, black } = chance.adjustment(inWhite, inBlack, result, opts)
+      const homeIsGreater = inWhite > inBlack
+      const awayIsGreater = inBlack > inWhite
+      const ratingsSame = inWhite === inBlack
 
+      if (result !== 0) {
+        expect(white).to.not.equal(inWhite)
+        expect(black).to.not.equal(inBlack)
+      }
 
-let testScores: Array<any> = [
-    [1500, 1600, 1, {}],
-    [1500, 1600, -1, {}]
+      if (result === 0) {
+        expect(white).to.not.equal(inWhite)
+        expect(black).to.not.equal(inBlack)
+      }
+    }
+  })
+})
+
+type Fixture = {
+  inWhite: number
+  inBlack: number
+  result: chance.Result
+  opts: chance.Options
+}
+
+const fixtures: Fixture[] = [
+  { inWhite: 1500, inBlack: 1600, result: 1, opts: {} },
+  { inWhite: 1500, inBlack: 1600, result: -1, opts: {} }
 ]

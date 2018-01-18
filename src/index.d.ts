@@ -1,3 +1,1 @@
-import * as chance from './chance';
-
-export { chance as default }
+export * from './chance';
