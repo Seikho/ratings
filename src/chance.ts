@@ -55,7 +55,12 @@ export function adjustment(
   const ratingChange = Math.abs(kFactor * (result - expectedResult))
 
   const winner = getWinner(result)
-  return adjust(winner, whiteRating, blackRating, ratingChange)
+  const { white, black } = adjust(winner, whiteRating, blackRating, ratingChange)
+
+  return {
+    white: Math.round(white),
+    black: Math.round(black)
+  }
 }
 
 enum Winner {
