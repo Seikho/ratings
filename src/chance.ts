@@ -33,7 +33,11 @@ export function adjustment(
 
   return {
     white: Math.round(white),
-    black: Math.round(black)
+    black: Math.round(black),
+    shift: {
+      white: white - whiteRating,
+      black: black - blackRating
+    }
   }
 }
 

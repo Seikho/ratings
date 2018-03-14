@@ -14,4 +14,8 @@ export declare type Result = 1 | 0 | -1;
 export declare function adjustment(whiteRating: number, blackRating: number, result: Result, kFactor?: number): {
     white: number;
     black: number;
+    shift: {
+        white: number;
+        black: number;
+    };
 };
