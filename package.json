@@ -1,11 +1,11 @@
 {
   "name": "ratings",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "ELO ratings helper",
   "main": "src/index.js",
   "scripts": {
     "prepare": "yarn build && yarn test",
-    "test": "mocha \"test/**/*.js\"",
+    "test": "mocha \"src/**/*.spec.js\"",
     "build": "tsc",
     "lint": "prettier --single-quote=true --no-bracket-spacing=true --tab-width=2 --trailing-comma=none --use-tabs=false --print-width=100 --no-semi --write \"src/**/*.ts\""
   },

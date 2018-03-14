@@ -1,4 +1,4 @@
-import * as chance from '../src/chance'
+import * as elo from '../src/chance'
 import { expect } from 'chai'
 
 // TODO: Add more tests...
@@ -6,8 +6,9 @@ import { expect } from 'chai'
 describe('chance tests', () => {
   it('will change ratings', () => {
     for (const fixture of fixtures) {
-      const { inWhite, inBlack, result, opts } = fixture
-      const { white, black } = chance.adjustment(inWhite, inBlack, result, opts)
+      const { inWhite, inBlack, result } = fixture
+      const chance = elo.chance(inWhite, inBlack)
+      const { white, black } = elo.adjustment(inWhite, inBlack, result)
       const homeIsGreater = inWhite > inBlack
       const awayIsGreater = inBlack > inWhite
       const ratingsSame = inWhite === inBlack
@@ -28,11 +29,10 @@ describe('chance tests', () => {
 type Fixture = {
   inWhite: number
   inBlack: number
-  result: chance.Result
-  opts: chance.Options
+  result: elo.Result
 }
 
 const fixtures: Fixture[] = [
-  { inWhite: 1500, inBlack: 1600, result: 1, opts: {} },
-  { inWhite: 1500, inBlack: 1600, result: -1, opts: {} }
+  { inWhite: 1500, inBlack: 1600, result: 1 },
+  { inWhite: 1500, inBlack: 1600, result: -1 }
 ]

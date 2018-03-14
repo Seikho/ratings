@@ -1,39 +1,16 @@
-const CHANCE_TABLE = [
-  { difference: 25, chance: 0.5 },
-  { difference: 50, chance: 0.53 },
-  { difference: 100, chance: 0.57 },
-  { difference: 150, chance: 0.64 },
-  { difference: 200, chance: 0.7 },
-  { difference: 250, chance: 0.76 },
-  { difference: 300, chance: 0.81 },
-  { difference: 350, chance: 0.85 },
-  { difference: 400, chance: 0.89 },
-  { difference: 450, chance: 0.92 },
-  { difference: 500, chance: 0.94 },
-  { difference: 735, chance: 0.96 },
-  { difference: 799, chance: 0.99 }
-]
-
-const K_FACTOR = 10
-const DEFAULT_SCORE_LIMIT = 1
+const K_FACTOR = 32
 
 /**
- * @returns The chance for the highest rated player to win (0.0 -> 1.0)
+ * @returns The odds for each player to win
  */
-export function chance(whiteRating: number, blackRating: number): number {
-  const difference = Math.abs(whiteRating - blackRating)
-  const chanceRow = CHANCE_TABLE.filter(c => difference <= c.difference)[0]
+export function chance(whiteRating: number, blackRating: number) {
+  const wr = Math.pow(10, whiteRating / 400) * 1000
+  const br = Math.pow(10, blackRating / 400) * 1000
 
-  return chanceRow ? chanceRow.chance : 1
-}
-
-export function expected(whiteRating: number, blackRating: number, options?: Options): number {
-  options = options || {}
-  const scoreUpperLimit = options.scoreUpperLimit || DEFAULT_SCORE_LIMIT
-
-  const winChance = chance(whiteRating, blackRating)
-
-  return (scoreUpperLimit * 2 * winChance - scoreUpperLimit) * (whiteRating > blackRating ? 1 : -1)
+  return {
+    white: Math.round(wr / (wr + br) * 1000) / 1000,
+    black: Math.round(br / (wr + br) * 1000) / 1000
+  }
 }
 
 /**
@@ -47,15 +24,12 @@ export function adjustment(
   whiteRating: number,
   blackRating: number,
   result: Result,
-  options?: Options
+  kFactor?: number
 ) {
-  options = options || {}
-  const kFactor = options.kFactor || K_FACTOR
-  const expectedResult = expected(whiteRating, blackRating)
-  const ratingChange = Math.abs(kFactor * (result - expectedResult))
+  kFactor = kFactor || K_FACTOR
 
   const winner = getWinner(result)
-  const { white, black } = adjust(winner, whiteRating, blackRating, ratingChange)
+  const { white, black } = adjust(winner, whiteRating, blackRating, kFactor)
 
   return {
     white: Math.round(white),
@@ -69,43 +43,17 @@ enum Winner {
   Draw
 }
 
-function adjust(winner: Winner, white: number, black: number, adjustment: number) {
-  switch (winner) {
-    case Winner.White:
-      return {
-        white: white + adjustment,
-        black: black - adjustment
-      }
+function adjust(winner: Winner, white: number, black: number, k: number) {
+  const odds = chance(white, black)
+  const whiteShift = winner === Winner.Draw ? 0.5 : winner === Winner.White ? 1 : 0
+  const blackShift = winner === Winner.Draw ? 0.5 : winner === Winner.Black ? 1 : 0
 
-    case Winner.Black:
-      return {
-        white: white - adjustment,
-        black: black + adjustment
-      }
-
-    case Winner.Draw:
-      const whiteHigher = white > black
-      if (whiteHigher) {
-        return {
-          white: white - adjustment,
-          black: black + adjustment
-        }
-      }
-      return {
-        white: white - adjustment,
-        black: black + adjustment
-      }
+  return {
+    white: white + k * (whiteShift - odds.white),
+    black: black + k * (blackShift - odds.black)
   }
 }
 
 function getWinner(result: 1 | 0 | -1) {
-  return result === 1 ? Winner.White : result === 0 ? Winner.Black : Winner.Draw
-}
-
-export interface Options {
-  /** K-Factor: Higher value causes larger rating adjustments. Defaults to 10 */
-  kFactor?: number
-
-  /** Defaults to 1 (Highest Chess score) */
-  scoreUpperLimit?: number
+  return result === 1 ? Winner.White : result === 0 ? Winner.Draw : Winner.Black
 }
