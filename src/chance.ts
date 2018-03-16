@@ -1,9 +1,17 @@
 const K_FACTOR = 32
 
+export interface Chance {
+  /** Percentage 0 to 1 */
+  white: number
+
+  /** Percentage 0 to 1 */
+  black: number
+}
+
 /**
  * @returns The odds for each player to win
  */
-export function chance(whiteRating: number, blackRating: number) {
+export function chance(whiteRating: number, blackRating: number): Chance {
   const wr = Math.pow(10, whiteRating / 400) * 1000
   const br = Math.pow(10, blackRating / 400) * 1000
 
@@ -20,12 +28,21 @@ export function chance(whiteRating: number, blackRating: number) {
  */
 export type Result = 1 | 0 | -1
 
+export interface Adjustment {
+  white: number
+  black: number
+  shift: {
+    white: number
+    black: number
+  }
+}
+
 export function adjustment(
   whiteRating: number,
   blackRating: number,
   result: Result,
   kFactor?: number
-) {
+): Adjustment {
   kFactor = kFactor || K_FACTOR
 
   const winner = getWinner(result)

@@ -1,6 +1,6 @@
 {
   "name": "ratings",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "ELO ratings helper",
   "main": "src/index.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "rating",
     "calculator"
   ],
-  "typings": "src/index.d.ts",
+  "typings": "types/index.d.ts",
   "author": "Carl Winkler",
   "license": "MIT",
   "bugs": {
