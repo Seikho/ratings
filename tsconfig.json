@@ -4,8 +4,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "declaration": true,
-    "declarationDir": "./src"
+    "declarationDir": "./types"
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }
