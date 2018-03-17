@@ -1,6 +1,6 @@
 {
   "name": "ratings",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "ELO ratings helper",
   "main": "src/index.js",
   "scripts": {
