@@ -2,33 +2,36 @@
 Helper module for calculating ELO ratings adjustments and chance
 
 # Installation
-```
-npm install ratings --save
+```sh
+> npm install ratings --save
+> yarn add ratings
 ```
 
 # Usage
 ```javascript
-const ratings = require('ratings');
+const elo = require('ratings')
 
 // or ES6
-import ratings from 'ratings';
+import * as elo from 'ratings'
 
 // Return the chance of victory for the
-ratings.chance(1550 /* home rating */, 1650 /* away rating */);
+elo.chance(1550 /* home rating */, 1650 /* away rating */);
 
 // Calculate the rating adjustment
-ratings.adjustment(1550, 1650, -1);
-
-// Calculate the expected result
-ratings.expected(1700, 1500);
+elo.adjustment(1550, 1650, -1)
 ```
 
 # API
 
 ## chance
-Returns the chance of victory for the higher rated player (`0.00` -> `1.00`)
+Returns the expected chance of victory for each player (`0.00` -> `1.00`)
 ```ts
-function chance(whiteRating: number, blackRating: number): number;
+interface Chance {
+    // Percentages in 0.00 -> 1.00
+    white: number
+    black: number
+}
+function chance(whiteRating: number, blackRating: number): Chance
 
 ```
 
@@ -41,25 +44,17 @@ Adjustment and score range can be adjusted in options
 // 1: White win, 0: Draw, -1: Black win
 type Result = 1 | 0 | -1
 
-function adjustment(whiteRating: number, blackRating: number, result: Result, options?: Options): { home: number, away: number };
-```
+interface Adjustment {
+    // Ratings after adjustment:
+    white: number
+    black: number
 
-## expected
-See [Options](#options) interface
-Returns the expected result given the player ratings (`-1.00` -> `1.00`).
-Result range can by modified in options.
-```ts
-function expected(whiteRating: number, blackRating: number, options?: Options): number;
-```
-
-## Options
-```ts
-interface Options {
-    /** Defaults to 10. Higher values increase the rating adjustments */
-    kFactor?: number;
-
-    /** Defaults to 1. Sets the upper limit of the score.
-     * Chess scores can be -1, 0 or 1, therefore the default upper limit is 1. */
-    scoreUpperLimit?: number;
+    // Rating shift applied
+    shift: {
+        white: number
+        black: number
+    }
 }
+
+function adjustment(whiteRating: number, blackRating: number, result: Result, kFactor: number = 32): Adjustment
 ```
